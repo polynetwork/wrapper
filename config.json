@@ -1,0 +1,13 @@
+{
+  "neoChainId": 4,
+  "neoUrl": "http://172.168.3.76:11332",
+  "neoWif": "",
+  "neoWallet": "",
+  "neoWalletPwd": "1",
+  "proxyToBind": [
+    {"fromChainId": 4, "fromProxy": "", "toChainId": 5, "toProxy": ""}
+  ],
+  "assetToBind": [
+    {"fromChainId": 4, "fromAsset": "", "toChainId": 5, "toAsset": ""}
+  ]
+}
