@@ -11,8 +11,12 @@ module.exports = async function (deployer, network, accounts) {
     }
     
     const admin = accounts[0];
-    await deployer.deploy(PolyWrapper, admin);
-    
+    // // ethereum
+    // await deployer.deploy(PolyWrapper, admin, '2');
+    // bsc
+    await deployer.deploy(PolyWrapper, admin, '79');
+    // // heco
+    // await deployer.deploy(PolyWrapper, admin, '7');
 
     let config = utils.getContractAddresses();;
     

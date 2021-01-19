@@ -26,8 +26,8 @@ namespace neo_wrapper
         public static event Action<byte[]> Paused;
         // Unpaused(owner)
         public static event Action<byte[]> Unpaused;
-        // PolyWrapperLock(fromAsset, fromAddress, toChainId, toAddress, netAmount, fee)
-        public static event Action<byte[], byte[], BigInteger, byte[], BigInteger, BigInteger> PolyWrapperLock;
+        // PolyWrapperLock(fromAsset, fromAddress, toChainId, toAddress, netAmount, fee, id)
+        public static event Action<byte[], byte[], BigInteger, byte[], BigInteger, BigInteger, BigInteger> PolyWrapperLock;
         // SpeedUp(fromAsset, txHash, fromAddress, fee)
         public static event Action<byte[], byte[], byte[], BigInteger> PolyWrapperSpeedUp;
 
@@ -77,7 +77,8 @@ namespace neo_wrapper
                     byte[] toAddress = (byte[])args[3];
                     BigInteger amount = (BigInteger)args[4];
                     BigInteger fee = (BigInteger)args[5];
-                    return Lock(fromAsset, fromAddress, toChainId, toAddress, amount, fee);
+                    BigInteger id = (BigInteger)args[6];
+                    return Lock(fromAsset, fromAddress, toChainId, toAddress, amount, fee, id);
                 }
                 if (method == "speedUp")
                 {
@@ -156,7 +157,7 @@ namespace neo_wrapper
         }
 
         [DisplayName("lock")]
-        public static bool Lock(byte[] fromAsset, byte[] fromAddress, BigInteger toChainId, byte[] toAddress, BigInteger amount, BigInteger fee)
+        public static bool Lock(byte[] fromAsset, byte[] fromAddress, BigInteger toChainId, byte[] toAddress, BigInteger amount, BigInteger fee, BigInteger id)
         {
             _assert(Runtime.CheckWitness(fromAddress), "!fromAddress");
             _assert(toChainId != NeoChainId && toChainId != 0, "!toChainId");
@@ -164,7 +165,7 @@ namespace neo_wrapper
             _assert(!paused(), "paused");
             _pull(fromAsset, fromAddress, amount);
             _push(fromAsset, ExecutionEngine.ExecutingScriptHash, toChainId, toAddress, amount - fee);
-            PolyWrapperLock(fromAsset, fromAddress, toChainId, toAddress, amount - fee, fee);
+            PolyWrapperLock(fromAsset, fromAddress, toChainId, toAddress, amount - fee, fee, id);
             return true;
         }
 

@@ -13,12 +13,15 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
     using SafeMath for uint;
     using SafeERC20 for IERC20;
 
+    uint public chainId;
     address public feeCollector;
 
     ILockProxy public lockProxy;
 
-    constructor(address owner) public {
-        transferOwnership(owner);
+    constructor(address _owner, uint _chainId) public {
+        require(_chainId != 0, "!legal");
+        transferOwnership(_owner);
+        chainId = _chainId;
     }
 
     function setFeeCollector(address collector) external onlyOwner {
@@ -51,16 +54,16 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
         }
     }
     
-    function lock(address fromAsset, uint64 toChainId, bytes memory toAddress, uint amount, uint fee) external payable nonReentrant whenNotPaused {
+    function lock(address fromAsset, uint64 toChainId, bytes memory toAddress, uint amount, uint fee, uint id) external payable nonReentrant whenNotPaused {
         
-        require(toChainId != 2 && toChainId != 0, "cross to eth chain");
+        require(toChainId != chainId && toChainId != 0, "!toChainId");
         require(amount > fee, "amount less than fee");
         
         _pull(fromAsset, amount);
 
         _push(fromAsset, toChainId, toAddress, amount.sub(fee));
 
-        emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount.sub(fee), fee);
+        emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount.sub(fee), fee, id);
     }
 
     function speedUp(address fromAsset, bytes memory txHash, uint fee) external payable nonReentrant whenNotPaused {
@@ -86,7 +89,7 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
         }
     }
 
-    event PolyWrapperLock(address indexed fromAsset, address indexed sender, uint64 toChainId, bytes toAddress, uint net, uint fee);
+    event PolyWrapperLock(address indexed fromAsset, address indexed sender, uint64 toChainId, bytes toAddress, uint net, uint fee, uint id);
     event PolyWrapperSpeedUp(address indexed fromAsset, bytes indexed txHash, address indexed sender, uint efee);
 
 }

@@ -1,5 +1,5 @@
 {
-    "hash":"0x8ff9158bc6379ff77e94e36c0db336fcbedcdccc",
+    "hash":"0x11980f8ffc87ce7452d72d8db28bbb19f076eced",
     "metadata":
     {
         "title":"neo_wrapper",
@@ -121,6 +121,10 @@
                 {
                     "name":"fee",
                     "type":"Integer"
+                },
+                {
+                    "name":"id",
+                    "type":"Integer"
                 }
             ],
             "returntype":"Boolean"
@@ -232,6 +236,10 @@
                 },
                 {
                     "name":"arg6",
+                    "type":"Integer"
+                },
+                {
+                    "name":"arg7",
                     "type":"Integer"
                 }
             ]

@@ -4,5 +4,8 @@
     },
     "bsc":{
         "lockproxy":"0x097Ae585BfEf78DDC8E266ABCb840dAF7265130c"
+    },
+    "heco":{
+        "lockproxy":"0x4a76E52600C6285029c8f7c52183cf86282cA5b8"
     }
 }
