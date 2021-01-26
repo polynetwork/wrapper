@@ -163,8 +163,8 @@ namespace neo_wrapper
             _assert(toChainId != NeoChainId && toChainId != 0, "!toChainId");
             _assert(amount > fee, "amount less than fee");
             _assert(!paused(), "paused");
-            _pull(fromAsset, fromAddress, amount);
-            _push(fromAsset, ExecutionEngine.ExecutingScriptHash, toChainId, toAddress, amount - fee);
+            _pull(fromAsset, fromAddress, fee);
+            _push(fromAsset, fromAddress, toChainId, toAddress, amount - fee);
             PolyWrapperLock(fromAsset, fromAddress, toChainId, toAddress, amount - fee, fee, id);
             return true;
         }
