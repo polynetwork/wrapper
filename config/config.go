@@ -99,7 +99,7 @@ func (conf *TestConfig) Init(fileName string) error {
 Load JSON Configuration
 */
 func (conf *TestConfig) loadConfig(fileName string) error {
-	data, err := conf.readFile(fileName)
+	data, err := conf.ReadFile(fileName)
 	if err != nil {
 		return err
 	}
@@ -113,7 +113,7 @@ func (conf *TestConfig) loadConfig(fileName string) error {
 /**
 Read  File to bytes
 */
-func (conf *TestConfig) readFile(fileName string) ([]byte, error) {
+func (conf *TestConfig) ReadFile(fileName string) ([]byte, error) {
 	file, err := os.OpenFile(fileName, os.O_RDONLY, 0666)
 	if err != nil {
 		return nil, fmt.Errorf("OpenFile %s error %s", fileName, err)

@@ -86,7 +86,7 @@ var Log *Logger
 
 func init() {
 	//Default print to console
-	InitLog(InfoLog, Stdout)
+	InitLog(DebugLog, Stdout)
 }
 
 func LevelName(level int) string {

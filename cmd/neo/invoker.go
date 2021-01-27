@@ -8,7 +8,6 @@ import (
 	"github.com/joeqian10/neo-gogogo/sc"
 	"github.com/joeqian10/neo-gogogo/wallet"
 	"github.com/ontio/ontology/common"
-	"github.com/skyinglyh1/poly_wrapper/config"
 	"github.com/skyinglyh1/poly_wrapper/log"
 	"math/big"
 	"strings"
@@ -20,18 +19,14 @@ type NeoInvoker struct {
 	Acc *wallet.Account
 }
 
-func NewNeoInvoker() (invoker *NeoInvoker, err error) {
+func NewNeoInvoker(url, walletPath, walletPwd string) (invoker *NeoInvoker, err error) {
 	invoker = &NeoInvoker{}
-	invoker.Cli = rpc.NewClient(config.DefConfig.NeoUrl)
-	if config.DefConfig.NeoWallet != "" && config.DefConfig.NeoWalletPwd != "" {
-		invoker.Acc = GetAccountByPassword(config.DefConfig.NeoWallet, config.DefConfig.NeoWalletPwd)
-		if invoker.Acc == nil {
-			log.Errorf("GetAccountByPassword to obtain pwd error")
-			err = fmt.Errorf("GetAccountByPassword to obtain pwd error")
-			return
-		}
+	invoker.Cli = rpc.NewClient(url)
+	invoker.Acc = GetAccountByPassword(walletPath, walletPwd)
+	if invoker.Acc == nil {
+		return nil, fmt.Errorf("NewNeoInvoker GetAccountByPassword error")
 	}
-	return
+	return invoker, nil
 }
 
 func (this *NeoInvoker) GetAssetBalances(neoLockProxy []byte, fromAssetHashs [][]byte) ([]*big.Int, error) {
