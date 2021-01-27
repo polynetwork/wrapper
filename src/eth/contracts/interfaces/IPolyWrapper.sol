@@ -5,6 +5,7 @@ interface IPolyWrapper {
     function lockProxy() external view returns (address);
     function paused() external view returns (bool);
     function chainId() external view returns (uint);
+    function owner() external view returns (address);
 
     function lock(
         address fromAsset,
