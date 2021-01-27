@@ -153,7 +153,7 @@ func bindIPolyWrapper(address common.Address, caller bind.ContractCaller, transa
 // sets the output to result. The result type might be a single field for simple
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
-func (_IPolyWrapper *IPolyWrapperRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
+func (_IPolyWrapper *IPolyWrapperRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
 	return _IPolyWrapper.Contract.IPolyWrapperCaller.contract.Call(opts, result, method, params...)
 }
 
@@ -172,7 +172,7 @@ func (_IPolyWrapper *IPolyWrapperRaw) Transact(opts *bind.TransactOpts, method s
 // sets the output to result. The result type might be a single field for simple
 // returns, a slice of interfaces for anonymous returns and a struct for named
 // returns.
-func (_IPolyWrapper *IPolyWrapperCallerRaw) Call(opts *bind.CallOpts, result *[]interface{}, method string, params ...interface{}) error {
+func (_IPolyWrapper *IPolyWrapperCallerRaw) Call(opts *bind.CallOpts, result interface{}, method string, params ...interface{}) error {
 	return _IPolyWrapper.Contract.contract.Call(opts, result, method, params...)
 }
 
@@ -191,17 +191,12 @@ func (_IPolyWrapper *IPolyWrapperTransactorRaw) Transact(opts *bind.TransactOpts
 //
 // Solidity: function chainId() view returns(uint256)
 func (_IPolyWrapper *IPolyWrapperCaller) ChainId(opts *bind.CallOpts) (*big.Int, error) {
-	var out []interface{}
-	err := _IPolyWrapper.contract.Call(opts, &out, "chainId")
-
-	if err != nil {
-		return *new(*big.Int), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(*big.Int)).(**big.Int)
-
-	return out0, err
-
+	var (
+		ret0 = new(*big.Int)
+	)
+	out := ret0
+	err := _IPolyWrapper.contract.Call(opts, out, "chainId")
+	return *ret0, err
 }
 
 // ChainId is a free data retrieval call binding the contract method 0x9a8a0592.
@@ -222,17 +217,12 @@ func (_IPolyWrapper *IPolyWrapperCallerSession) ChainId() (*big.Int, error) {
 //
 // Solidity: function feeCollector() view returns(address)
 func (_IPolyWrapper *IPolyWrapperCaller) FeeCollector(opts *bind.CallOpts) (common.Address, error) {
-	var out []interface{}
-	err := _IPolyWrapper.contract.Call(opts, &out, "feeCollector")
-
-	if err != nil {
-		return *new(common.Address), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
-
-	return out0, err
-
+	var (
+		ret0 = new(common.Address)
+	)
+	out := ret0
+	err := _IPolyWrapper.contract.Call(opts, out, "feeCollector")
+	return *ret0, err
 }
 
 // FeeCollector is a free data retrieval call binding the contract method 0xc415b95c.
@@ -253,17 +243,12 @@ func (_IPolyWrapper *IPolyWrapperCallerSession) FeeCollector() (common.Address, 
 //
 // Solidity: function lockProxy() view returns(address)
 func (_IPolyWrapper *IPolyWrapperCaller) LockProxy(opts *bind.CallOpts) (common.Address, error) {
-	var out []interface{}
-	err := _IPolyWrapper.contract.Call(opts, &out, "lockProxy")
-
-	if err != nil {
-		return *new(common.Address), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
-
-	return out0, err
-
+	var (
+		ret0 = new(common.Address)
+	)
+	out := ret0
+	err := _IPolyWrapper.contract.Call(opts, out, "lockProxy")
+	return *ret0, err
 }
 
 // LockProxy is a free data retrieval call binding the contract method 0x9d4dc021.
@@ -284,17 +269,12 @@ func (_IPolyWrapper *IPolyWrapperCallerSession) LockProxy() (common.Address, err
 //
 // Solidity: function owner() view returns(address)
 func (_IPolyWrapper *IPolyWrapperCaller) Owner(opts *bind.CallOpts) (common.Address, error) {
-	var out []interface{}
-	err := _IPolyWrapper.contract.Call(opts, &out, "owner")
-
-	if err != nil {
-		return *new(common.Address), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(common.Address)).(*common.Address)
-
-	return out0, err
-
+	var (
+		ret0 = new(common.Address)
+	)
+	out := ret0
+	err := _IPolyWrapper.contract.Call(opts, out, "owner")
+	return *ret0, err
 }
 
 // Owner is a free data retrieval call binding the contract method 0x8da5cb5b.
@@ -315,17 +295,12 @@ func (_IPolyWrapper *IPolyWrapperCallerSession) Owner() (common.Address, error) 
 //
 // Solidity: function paused() view returns(bool)
 func (_IPolyWrapper *IPolyWrapperCaller) Paused(opts *bind.CallOpts) (bool, error) {
-	var out []interface{}
-	err := _IPolyWrapper.contract.Call(opts, &out, "paused")
-
-	if err != nil {
-		return *new(bool), err
-	}
-
-	out0 := *abi.ConvertType(out[0], new(bool)).(*bool)
-
-	return out0, err
-
+	var (
+		ret0 = new(bool)
+	)
+	out := ret0
+	err := _IPolyWrapper.contract.Call(opts, out, "paused")
+	return *ret0, err
 }
 
 // Paused is a free data retrieval call binding the contract method 0x5c975abb.
@@ -643,7 +618,6 @@ func (_IPolyWrapper *IPolyWrapperFilterer) ParsePolyWrapperLock(log types.Log) (
 	if err := _IPolyWrapper.contract.UnpackLog(event, "PolyWrapperLock", log); err != nil {
 		return nil, err
 	}
-	event.Raw = log
 	return event, nil
 }
 
@@ -806,7 +780,6 @@ func (_IPolyWrapper *IPolyWrapperFilterer) ParsePolyWrapperSpeedUp(log types.Log
 	if err := _IPolyWrapper.contract.UnpackLog(event, "PolyWrapperSpeedUp", log); err != nil {
 		return nil, err
 	}
-	event.Raw = log
 	return event, nil
 }
 
