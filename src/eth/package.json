@@ -4,7 +4,7 @@
   "description": "",
   "scripts": {
     "compile": "truffle compile",
-    "migrate": "rm -rf ./build & truffle migrate --reset --network bsc",
+    "migrate": "rm -rf ./build & truffle migrate --reset --network mainnet",
     "test": "truffle test"
   },
   "dependencies": {

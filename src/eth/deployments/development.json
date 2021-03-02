@@ -4,14 +4,29 @@
         "polywrapper": "0xe498fb7D00468a67A79dE5D4Ca264d3350165280",
         "lockproxy": "0xD8aE73e06552E270340b63A8bcAbf9277a1aac99"
     },
-    "bsc": {
+    "bsc_testnet": {
         "owner": "0xAd79C606Bd4EF330ac45df9D2aCE4e7e7c6Db13F",
         "polywrapper": "0xCed7997C3e807Fcdc5ac18fFC0B8af93a15a9eE5",
         "lockproxy": "0x097Ae585BfEf78DDC8E266ABCb840dAF7265130c"
     },
-    "heco": {
-        "owner": "0xAd79C606Bd4EF330ac45df9D2aCE4e7e7c6Db13F",
-        "polywrapper": "0x3c92F1E31aACA43Eb4fF8aE498C7E85618680F45",
+    "heco_testnet": {
+        "owner": "0x0E860F44d73F9FDbaF5E9B19aFC554Bf3C8E8A57",
+        "polywrapper": "0xE3D0FB6E3cB5DA61EB18b06D035052441009d1E6",
         "lockproxy": "0x4a76E52600C6285029c8f7c52183cf86282cA5b8"
+    },
+    "mainnet": {
+        "owner": "0x0E860F44d73F9FDbaF5E9B19aFC554Bf3C8E8A57",
+        "polywrapper": "0x2aA63cd0b28FB4C31fA8e4E95Ec11815Be07b9Ac",
+        "lockproxy": "0x250e76987d838a75310c34bf422ea9f1AC4Cc906"
+    },
+    "heco": {
+        "owner": "0x0E860F44d73F9FDbaF5E9B19aFC554Bf3C8E8A57",
+        "polywrapper": "0x4fE451186c0D69205ACc1fA00FD75fc6d71e47eE",
+        "lockproxy": "0x020c15e7d08A8Ec7D35bCf3AC3CCbF0BBf2704e6"
+    },
+    "bsc": {
+        "owner": "0x0E860F44d73F9FDbaF5E9B19aFC554Bf3C8E8A57",
+        "polywrapper": "0xE3D0FB6E3cB5DA61EB18b06D035052441009d1E6",
+        "lockproxy": "0x2f7ac9436ba4B548f9582af91CA1Ef02cd2F1f03"
     }
 }

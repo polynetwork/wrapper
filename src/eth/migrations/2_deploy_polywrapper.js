@@ -11,10 +11,10 @@ module.exports = async function (deployer, network, accounts) {
     }
     
     const admin = accounts[0];
-    // // ethereum
-    // await deployer.deploy(PolyWrapper, admin, '2');
-    // bsc
-    await deployer.deploy(PolyWrapper, admin, '79');
+    // ethereum
+    await deployer.deploy(PolyWrapper, admin, '2');
+    // // bsc
+    // await deployer.deploy(PolyWrapper, admin, '6');
     // // heco
     // await deployer.deploy(PolyWrapper, admin, '7');
 

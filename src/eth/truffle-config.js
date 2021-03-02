@@ -58,6 +58,30 @@ module.exports = {
     // },
     // Useful for deploying to a public network.
     // NB: It's important to wrap the provider as a function.
+    mainnet: {
+        provider: () => new HDWalletProvider(mnemonic, `https://mainnet.infura.io/v3/f7fd127c230e49b292bafd6c338995ea`),
+        network_id: 1,       // Ropsten's id
+        gas: 5500000,        // Ropsten has a lower block limit than mainnet
+        confirmations: 5,    // # of confs to wait between deployments. (default: 0)
+        timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+        skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
+    bsc: {
+        provider: () => new HDWalletProvider(mnemonic, `http://172.168.3.40:8545`),
+        network_id: 56,       // bsc testnet's id
+        gas: 5500000,        // Ropsten has a lower block limit than mainnet
+        confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+        timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+        skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
+    heco: {
+        provider: () => new HDWalletProvider(mnemonic, `https://http-mainnet.hecochain.com`),
+        network_id: 128,       // heco testnet's id
+        gas: 5500000,        // Ropsten has a lower block limit than mainnet
+        confirmations: 2,    // # of confs to wait between deployments. (default: 0)
+        timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
+        skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
+    },
     ropsten: {
         provider: () => new HDWalletProvider(mnemonic, `https://ropsten.infura.io/v3/9bca539684b6408d9dbcbb179e593eab`),
         network_id: 3,       // Ropsten's id
@@ -66,7 +90,7 @@ module.exports = {
         timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
         skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
-    bsc: {
+    bsc_testnet: {
         provider: () => new HDWalletProvider(mnemonic, `https://data-seed-prebsc-1-s1.binance.org:8545`),
         network_id: 97,       // bsc testnet's id
         gas: 5500000,        // Ropsten has a lower block limit than mainnet
@@ -74,7 +98,7 @@ module.exports = {
         timeoutBlocks: 200,  // # of blocks before a deployment times out  (minimum/default: 50)
         skipDryRun: true     // Skip dry run before migrations? (default: false for public nets )
     },
-    heco: {
+    heco_testnet: {
         provider: () => new HDWalletProvider(mnemonic, `https://http-testnet.hecochain.com`),
         network_id: 256,       // heco testnet's id
         gas: 5500000,        // Ropsten has a lower block limit than mainnet
