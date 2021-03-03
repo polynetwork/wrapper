@@ -166,9 +166,10 @@ def lock(fromAddress, fromAsset, toChainId, toAddress, amount, fee, id):
 
 
 def transferOwnership(newOwner):
-    assert (CheckWitness(getOwner()))
+    oldOwner = getOwner()
+    assert (CheckWitness(oldOwner))
     Put(GetContext(), OWNER_KEY, newOwner)
-    TransferOwnership(getOwner(), newOwner)
+    TransferOwnership(oldOwner, newOwner)
     return True
 
 
