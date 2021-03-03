@@ -1,4 +1,4 @@
-module github.com/skyinglyh1/poly_wrapper
+module github.com/polynetwork/wrapper
 
 go 1.14
 
