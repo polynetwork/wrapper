@@ -1,0 +1,13 @@
+.idea/
+.idea/*
+.wallets/*
+.vscode
+config-*.json
+
+config.json
+src/eth/node_modules
+src/eth/.secret
+src/eth/build
+src/eth/abigen
+src/eth/package-lock.json
+src/eth/contracts/@*

@@ -1,0 +1,13 @@
+{
+  "neoChainId": 4,
+  "neoUrl": "http://seed5.ngd.network:20332",
+  "neoWif": "",
+  "neoWallet": ".wallets/test/neo/neo.json",
+  "neoWalletPwd": "1",
+  "proxyToBind": [
+    {"fromChainId": 4, "fromProxy": "", "toChainId": 5, "toProxy": ""}
+  ],
+  "assetToBind": [
+    {"fromChainId": 4, "fromAsset": "", "toChainId": 5, "toAsset": ""}
+  ]
+}

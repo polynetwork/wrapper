@@ -1,0 +1,20 @@
+{
+    "ropsten": {
+        "lockproxy": "0xD8aE73e06552E270340b63A8bcAbf9277a1aac99"
+    },
+    "bsc_testnet":{
+        "lockproxy":"0x097Ae585BfEf78DDC8E266ABCb840dAF7265130c"
+    },
+    "heco_testnet":{
+        "lockproxy":"0x4a76E52600C6285029c8f7c52183cf86282cA5b8"
+    },
+    "mainnet": {
+        "lockproxy": "0x250e76987d838a75310c34bf422ea9f1AC4Cc906"
+    },
+    "heco": {
+        "lockproxy": "0x020c15e7d08A8Ec7D35bCf3AC3CCbF0BBf2704e6"
+    },
+    "bsc": {
+        "lockproxy": "0x2f7ac9436ba4B548f9582af91CA1Ef02cd2F1f03"
+    }
+}
