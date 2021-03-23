@@ -3,6 +3,7 @@ OntCversion = '2.0.0'
 Smart contract for wrap locking cross chain asset between Ontology and other chains provided by poly
 """
 
+from ontology.interop.Ontology.Native import Invoke
 from ontology.interop.System.Action import RegisterAction
 from ontology.interop.System.Storage import Put, GetContext, Get, Delete
 from ontology.interop.System.ExecutionEngine import GetExecutingScriptHash
@@ -17,6 +18,8 @@ LOCK_PROXY_KEY = "lockProxy"
 PAUSE_KEY = "pause"
 # Constant
 OntChainIdOnPoly = 3
+ONT_ADDRESS = bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x01')
+ONG_ADDRESS = bytearray(b'\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x02')
 
 # Event
 TransferOwnership = RegisterAction("TransferOwnership", "oldOwner", "newOwner")
@@ -149,18 +152,31 @@ def lock(fromAddress, fromAsset, toChainId, toAddress, amount, fee, id):
     lockProxy = getLockProxy()
     toAssethash = DynamicAppCall(lockProxy, 'getAssetHash', [fromAsset, toChainId])
     assert (len(toAssethash) > 0)
-
-    # call lock contract lock
-    res = DynamicAppCall(fromAsset, "approve", [fromAddress, lockProxy, amount - fee])
-    assert (res == True)
-    res = DynamicAppCall(lockProxy, 'lock', [fromAsset, fromAddress, toChainId, toAddress, amount - fee])
-    assert (res == True)
-
+    
     # transfer fee to fee collector
     feeCollector = getFeeCollector()
     assert (len(feeCollector) == 20)
-    res = DynamicAppCall(fromAsset, 'transfer', [fromAddress, feeCollector, fee])
+
+    if (fromAsset != ONT_ADDRESS and fromAsset != ONG_ADDRESS):
+        # approve and transfer fee
+        res = DynamicAppCall(fromAsset, "approve", [fromAddress, lockProxy, amount - fee])
+        assert (res == True)
+        res = DynamicAppCall(fromAsset, 'transfer', [fromAddress, feeCollector, fee])
+        assert (res == True)
+    else:
+        # native token dont need to approve,just transfer fee
+        param = state(fromAddress, feeCollector, fee)
+        res = Invoke(0, fromAsset, 'transfer', [param])
+        if res and res == b'\x01':
+            flag = True
+        else:
+            flag = False
+        assert (flag == True)
+    
+    # call lock-proxy contract lock
+    res = DynamicAppCall(lockProxy, 'lock', [fromAsset, fromAddress, toChainId, toAddress, amount - fee])
     assert (res == True)
+    
     PolyWrapperLock(fromAsset, fromAddress, toChainId, toAddress, amount - fee, fee, id)
     return True
 
