@@ -55,7 +55,7 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
     }
     
     function lock(address fromAsset, uint64 toChainId, bytes memory toAddress, uint amount, uint fee, uint id) external payable nonReentrant whenNotPaused {
-        
+        require(toAddress.length != 0, "zero address");
         require(toChainId != chainId && toChainId != 0, "!toChainId");
         require(amount > fee, "amount less than fee");
         
