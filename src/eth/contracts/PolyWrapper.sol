@@ -57,11 +57,12 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
     function lock(address fromAsset, uint64 toChainId, bytes memory toAddress, uint amount, uint fee, uint id) external payable nonReentrant whenNotPaused {
         
         require(toChainId != chainId && toChainId != 0, "!toChainId");
-        require(amount > fee, "amount less than fee");
         
         _pull(fromAsset, amount);
 
-        _push(fromAsset, toChainId, toAddress, amount.sub(fee));
+        amount = _checkoutFee(fromAssetHash, amount, fee);
+
+        _push(fromAsset, toChainId, toAddress, amount);
 
         emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount.sub(fee), fee, id);
     }
@@ -76,6 +77,17 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
             require(msg.value == amount, "insufficient ether");
         } else {
             IERC20(fromAsset).safeTransferFrom(msg.sender, address(this), amount);
+        }
+    }
+
+    function _checkoutFee(address fromAsset, uint amount, uint fee) internal view returns (uint) {
+        if (fromAsset == address(0)) {
+            require(msg.value == amount, "insufficient ether");
+            require(amount > fee, "amount less than fee");
+            return amount.sub(fee);
+        } else {
+            require(msg.value == fee, "insufficient ether");
+            return amount;
         }
     }
 
