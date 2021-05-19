@@ -64,7 +64,7 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
 
         _push(fromAsset, toChainId, toAddress, amount);
 
-        emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount.sub(fee), fee, id);
+        emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount, fee, id);
     }
 
     function speedUp(address fromAsset, bytes memory txHash, uint fee) external payable nonReentrant whenNotPaused {
