@@ -95,7 +95,7 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
             if (FeeToken == address(0)) {
                 require(msg.value >= fee, "insufficient msg.value");
             } else {
-                IERC20(FeeToken).safeTransferFrom(msg.sender, address(this), amount);
+                IERC20(FeeToken).safeTransferFrom(msg.sender, address(this), fee);
             }
             return amount;
         }
