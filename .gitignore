@@ -11,3 +11,5 @@ src/eth/build
 src/eth/abigen
 src/eth/package-lock.json
 src/eth/contracts/@*
+artifacts
+.DS_Store
