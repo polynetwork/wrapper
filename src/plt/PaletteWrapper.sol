@@ -1,14 +1,14 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity >=0.6.0;
 
-import "./libs/token/ERC20/SafeERC20.sol";
-import "./libs/token/ERC20/IERC20.sol";
-import "./libs/access/Ownable.sol";
-import "./libs/utils/ReentrancyGuard.sol";
-import "./libs/math/SafeMath.sol";
-import "./libs/lifecycle/Pausable.sol";
+import "../eth-no-truffle/libs/token/ERC20/SafeERC20.sol";
+import "../eth-no-truffle/libs/token/ERC20/IERC20.sol";
+import "../eth-no-truffle/libs/access/Ownable.sol";
+import "../eth-no-truffle/libs/utils/ReentrancyGuard.sol";
+import "../eth-no-truffle/libs/math/SafeMath.sol";
+import "../eth-no-truffle/libs/lifecycle/Pausable.sol";
 
-import "./interfaces/ILockProxy.sol";
+import "../eth-no-truffle/interfaces/ILockProxy.sol";
 
 contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
     using SafeMath for uint;
@@ -16,13 +16,15 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
 
     uint public chainId;
     address public feeCollector;
+    address public FeeToken;
 
     ILockProxy public lockProxy;
 
-    constructor(address _owner, uint _chainId) public {
+    constructor(address _owner, address _feeToken, uint _chainId) public {
         require(_chainId != 0, "!legal");
         transferOwnership(_owner);
         chainId = _chainId;
+        FeeToken = _feeToken;
     }
 
     function setFeeCollector(address collector) external onlyOwner {
@@ -58,7 +60,6 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
     function lock(address fromAsset, uint64 toChainId, bytes memory toAddress, uint amount, uint fee, uint id) external payable nonReentrant whenNotPaused {
         
         require(toChainId != chainId && toChainId != 0, "!toChainId");
-        require(amount > fee, "amount less than fee");
         require(toAddress.length !=0, "empty toAddress");
         address addr;
         assembly { addr := mload(add(toAddress,0x14)) }
@@ -66,9 +67,11 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
         
         _pull(fromAsset, amount);
 
-        _push(fromAsset, toChainId, toAddress, amount.sub(fee));
+        amount = _checkoutFee(fromAsset, amount, fee);
 
-        emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount.sub(fee), fee, id);
+        _push(fromAsset, toChainId, toAddress, amount);
+
+        emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount, fee, id);
     }
 
     function speedUp(address fromAsset, bytes memory txHash, uint fee) external payable nonReentrant whenNotPaused {
@@ -78,9 +81,23 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
 
     function _pull(address fromAsset, uint amount) internal {
         if (fromAsset == address(0)) {
-            require(msg.value == amount, "insufficient ether");
+            require(msg.value == amount, "insufficient msg.value");
         } else {
             IERC20(fromAsset).safeTransferFrom(msg.sender, address(this), amount);
+        }
+    }
+
+    function _checkoutFee(address fromAsset, uint amount, uint fee) internal returns (uint) {
+        if (fromAsset == FeeToken) {
+            require(amount > fee, "amount less than fee");
+            return amount.sub(fee);
+        } else {
+            if (FeeToken == address(0)) {
+                require(msg.value >= fee, "insufficient msg.value");
+            } else {
+                IERC20(FeeToken).safeTransferFrom(msg.sender, address(this), amount);
+            }
+            return amount;
         }
     }
 
