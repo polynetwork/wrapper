@@ -78,7 +78,7 @@ namespace N3ProxyWrapper
         public static bool Unpause()
         {
             Assert(CheckSuperOwner(), "Forbidden");
-            PauseMap.Put("global", null);
+            PauseMap.Put("global", 0);
             return true;
         }
 
