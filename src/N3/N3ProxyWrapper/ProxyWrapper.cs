@@ -1,8 +1,10 @@
 using System;
+using System.ComponentModel;
 using System.Numerics;
 using Neo;
 using Neo.SmartContract;
 using Neo.SmartContract.Framework;
+using Neo.SmartContract.Framework.Attributes;
 using Neo.SmartContract.Framework.Native;
 using Neo.SmartContract.Framework.Services;
 
@@ -116,10 +118,10 @@ namespace N3ProxyWrapper
             Assert(Runtime.CheckWitness(fromAddress), "Forbidden");
             if (fee != 0)
             {
-                Contract.Call(fromAsset, "transfer", CallFlags.All, fromAddress, Runtime.ExecutingScriptHash, fee, null);
+                GAS.Transfer(fromAddress, Runtime.ExecutingScriptHash, fee, null);
             }
-            Contract.Call(Proxy(), "lock", CallFlags.All, fromAsset, fromAddress, toChainId, toAddress, amount - fee);
-            polyWrapperLock(fromAsset, fromAddress, toChainId, toAddress, amount - fee, fee, id);
+            Contract.Call(Proxy(), "lock", CallFlags.All, fromAsset, fromAddress, toChainId, toAddress, amount);
+            polyWrapperLock(fromAsset, fromAddress, toChainId, toAddress, amount, fee, id);
             return true;
         }
 
