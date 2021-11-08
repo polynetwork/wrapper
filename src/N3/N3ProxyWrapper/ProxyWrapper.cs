@@ -28,7 +28,7 @@ namespace N3ProxyWrapper
         private static readonly StorageMap PauseMap = new StorageMap(Storage.CurrentContext, "pause");
 
         public static event Action<object> notify;
-        public static event Action<UInt160, UInt160, BigInteger, byte[], BigInteger, BigInteger, object> polyWrapperLock;
+        public static event Action<UInt160, UInt160, BigInteger, byte[], BigInteger, BigInteger, object> PolyWrapperLock;
         public static void _deploy(object data, bool update)
         {
             OwnerMap.Put("superOwner", superOwner);
