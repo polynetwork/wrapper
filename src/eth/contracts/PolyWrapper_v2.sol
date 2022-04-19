@@ -55,15 +55,20 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
     }
     
     function lock(address fromAsset, uint64 toChainId, bytes memory toAddress, uint amount, uint fee, uint id) external payable nonReentrant whenNotPaused {
-        require(toAddress.length != 0, "zero address");
+        
         require(toChainId != chainId && toChainId != 0, "!toChainId");
-        require(amount > fee, "amount less than fee");
+        // require(toAddress.length !=0, "empty toAddress");
+        // address addr;
+        // assembly { addr := mload(add(toAddress,0x14)) }
+        // require(addr != address(0),"zero toAddress");
         
         _pull(fromAsset, amount);
 
-        _push(fromAsset, toChainId, toAddress, amount.sub(fee));
+        amount = _checkoutFee(fromAsset, amount, fee);
 
-        emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount.sub(fee), fee, id);
+        _push(fromAsset, toChainId, toAddress, amount);
+
+        emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount, fee, id);
     }
 
     function speedUp(address fromAsset, bytes memory txHash, uint fee) external payable nonReentrant whenNotPaused {
@@ -76,6 +81,18 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
             require(msg.value == amount, "insufficient ether");
         } else {
             IERC20(fromAsset).safeTransferFrom(msg.sender, address(this), amount);
+        }
+    }
+
+    // take fee in the form of ether
+    function _checkoutFee(address fromAsset, uint amount, uint fee) internal view returns (uint) {
+        if (fromAsset == address(0)) {
+            require(msg.value >= amount, "insufficient ether");
+            require(amount > fee, "amount less than fee");
+            return amount.sub(fee);
+        } else {
+            require(msg.value >= fee, "insufficient ether");
+            return amount;
         }
     }
 
