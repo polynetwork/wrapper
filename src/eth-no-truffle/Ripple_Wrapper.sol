@@ -35,6 +35,10 @@ contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
         rippleMinAmount = _rippleMinAmount;
     }
 
+    function rippleSetup(uint64 _rippleChainId) external onlyOwner {
+        rippleChainId = _rippleChainId;
+    }
+
     function setFeeCollector(address collector) external onlyOwner {
         require(collector != address(0), "emtpy address");
         feeCollector = collector;
