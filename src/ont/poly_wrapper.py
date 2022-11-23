@@ -79,6 +79,7 @@ def init(owner, feeCollector, lockProxy):
     feeCollector: address receiving fee
     lockProxy: lockProxy hash
     """
+    assert (len(getOwner()) == 0)
     assert (CheckWitness(owner))
     Put(GetContext(), OWNER_KEY, owner)
     Put(GetContext(), FEE_COLLECTOR_KEY, feeCollector)
