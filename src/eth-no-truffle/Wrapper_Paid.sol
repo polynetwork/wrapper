@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity >=0.6.0;
+pragma solidity 0.6.12;
 
 import "./libs/token/ERC20/SafeERC20.sol";
 import "./libs/token/ERC20/IERC20.sol";
