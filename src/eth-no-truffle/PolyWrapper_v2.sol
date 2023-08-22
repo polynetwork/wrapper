@@ -10,7 +10,7 @@ import "./libs/lifecycle/Pausable.sol";
 
 import "./interfaces/ILockProxy.sol";
 
-contract PolyWrapper is Ownable, Pausable, ReentrancyGuard {
+contract PolyWrapperV2 is Ownable, Pausable, ReentrancyGuard {
     using SafeMath for uint;
     using SafeERC20 for IERC20;
 

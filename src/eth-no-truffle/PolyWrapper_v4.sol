@@ -10,7 +10,7 @@ import "./libs/lifecycle/Pausable.sol";
 
 import "./interfaces/ILockProxy.sol";
 
-contract PolyWrapperV3 is Ownable, Pausable, ReentrancyGuard {
+contract PolyWrapperV4 is Ownable, Pausable, ReentrancyGuard {
     using SafeMath for uint;
     using SafeERC20 for IERC20;
     
@@ -52,7 +52,6 @@ contract PolyWrapperV3 is Ownable, Pausable, ReentrancyGuard {
         _unpause();
     }
 
-
     function extractFee(address token) external {
         require(msg.sender == feeCollector, "!feeCollector");
         if (token == address(0)) {
@@ -77,6 +76,8 @@ contract PolyWrapperV3 is Ownable, Pausable, ReentrancyGuard {
         address lockProxy = _getSupportLockProxy(fromAsset, toChainId);
         _push(fromAsset, toChainId, toAddress, amount, lockProxy);
 
+        _collectFee();
+
         emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount, fee, id);
     }
     
@@ -95,6 +96,8 @@ contract PolyWrapperV3 is Ownable, Pausable, ReentrancyGuard {
         require(isValidLockProxy(lockProxy),"invalid lockProxy");
         _push(fromAsset, toChainId, toAddress, amount, lockProxy);
 
+        _collectFee();
+        
         emit PolyWrapperLock(fromAsset, msg.sender, toChainId, toAddress, amount, fee, id);
     }
 
@@ -108,6 +111,12 @@ contract PolyWrapperV3 is Ownable, Pausable, ReentrancyGuard {
             require(msg.value == amount, "insufficient ether");
         } else {
             IERC20(fromAsset).safeTransferFrom(msg.sender, address(this), amount);
+        }
+    }
+
+    function _collectFee() internal {
+        if (feeCollector != address(0)) {
+            payable(feeCollector).transfer(address(this).balance);
         }
     }
 
@@ -164,7 +173,7 @@ contract PolyWrapperV3 is Ownable, Pausable, ReentrancyGuard {
         }
         return res;
     }
-
+    
     event PolyWrapperLock(address indexed fromAsset, address indexed sender, uint64 toChainId, bytes toAddress, uint net, uint fee, uint id);
     event PolyWrapperSpeedUp(address indexed fromAsset, bytes indexed txHash, address indexed sender, uint efee);
 
